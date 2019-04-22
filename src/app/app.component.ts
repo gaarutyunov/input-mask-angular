@@ -1,4 +1,5 @@
 import {Component} from '@angular/core';
+import {InputMaskOptions} from 'input-mask-angular';
 
 @Component({
   selector: 'app-root',
@@ -6,6 +7,7 @@ import {Component} from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  options: InputMaskOptions = new InputMaskOptions();
 
   logValue(value: any): void {
     console.log(value);

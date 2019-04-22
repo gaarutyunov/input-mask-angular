@@ -3,3 +3,4 @@
  */
 
 export { InputMaskAngularModule } from './lib/input-mask-angular.module';
+export { InputMaskOptions } from './lib/input-mask-options';

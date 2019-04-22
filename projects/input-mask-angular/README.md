@@ -33,7 +33,7 @@ npm install input-mask-angular --save
 #### 1. Import InputMaskAngularModule
 
 ```
-import { InputMaskAngularModule } from '...';
+import { InputMaskAngularModule } from 'input-mask-angular';
 ```
 
 #### 2. Apply the mask to HTMLInputElement in your template
@@ -43,7 +43,7 @@ import { InputMaskAngularModule } from '...';
 
 ```
 
-#### 3. Add methods to listen for changes
+#### 3. Add methods to listen for changes and options
 
 ```
 <input type="text"
@@ -51,6 +51,7 @@ import { InputMaskAngularModule } from '...';
   (formattedText)="logValue($event)" \\ text formatted by the mask: +7 (000) 000 00 00
   (extractedValue)="logValue($event)" \\ text extracted from the mask: +70000000000
   (maskFilled)="logValue($event)" \\ emits true when mask has been filled with correct value, else emits false
+  [options]="options" options of type InputMaskOptions
   >
 
 ```
