@@ -1,0 +1,32 @@
+{
+  "name": "input-mask-angular",
+  "version": "1.0.0",
+  "description": "Angular directive using ts-input-mask library",
+  "author": {
+    "name": "German Arutyunov",
+    "url": "https://github.com/gaarutyunov"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gaarutyunov/input-mask-angular"
+  },
+  "bugs": {
+    "url": "https://github.com/gaarutyunov/input-mask-angular/issues"
+  },
+  "homepage": "https://github.com/gaarutyunov/input-mask-angular/tree/master#readme",
+  "keywords": [
+    "typescript",
+    "input",
+    "inputmask",
+    "phonemask",
+    "datemask",
+    "mask",
+    "angular"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "@angular/common": "^7.2.0",
+    "@angular/core": "^7.2.0",
+    "ts-input-mask": "^1.0.2"
+  }
+}
