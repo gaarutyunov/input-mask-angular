@@ -12,6 +12,8 @@
       "element",
       "ima",
       "kebab-case"
-    ]
+    ],
+    "ban-types": false,
+    "variable-name": false
   }
 }

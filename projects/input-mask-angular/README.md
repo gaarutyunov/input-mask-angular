@@ -5,7 +5,7 @@
 
 ## Description
 
-`InputMaskAngular` is an Angular directive that uses [`ts-input-mask`](https://github.com/gaarutyunov/ts-input-mask) allowing to format user input on the fly. 
+`InputMaskAngular` is an Angular library that uses [`ts-input-mask`](https://github.com/gaarutyunov/ts-input-mask) allowing to format user input on the fly. 
 
 Based on [RadMadRobot's Input Mask Library](https://github.com/RedMadRobot/input-mask-android)
 
@@ -30,10 +30,12 @@ npm install input-mask-angular --save
 
 ## Usage
 
+### Directive
+
 #### 1. Import InputMaskAngularModule
 
 ```
-import { InputMaskAngularModule } from '...';
+import { InputMaskAngularModule } from 'input-mask-angular';
 ```
 
 #### 2. Apply the mask to HTMLInputElement in your template
@@ -43,7 +45,7 @@ import { InputMaskAngularModule } from '...';
 
 ```
 
-#### 3. Add methods to listen for changes
+#### 3. Add methods to listen for changes and options
 
 ```
 <input type="text"
@@ -51,7 +53,33 @@ import { InputMaskAngularModule } from '...';
   (formattedText)="logValue($event)" \\ text formatted by the mask: +7 (000) 000 00 00
   (extractedValue)="logValue($event)" \\ text extracted from the mask: +70000000000
   (maskFilled)="logValue($event)" \\ emits true when mask has been filled with correct value, else emits false
+  [options]="options" options of type InputMaskOptions
   >
+
+```
+
+#### 4. You can pass default value
+
+```
+<input type="text"
+  [mask]="'{+7} ([000]) [000] [00] [00]'"
+  (formattedText)="logValue($event)" \\ text formatted by the mask: +7 (000) 000 00 00
+  (extractedValue)="logValue($event)" \\ text extracted from the mask: +70000000000
+  (maskFilled)="logValue($event)" \\ emits true when mask has been filled with correct value, else emits false
+  [options]="options" options of type InputMaskOptions
+  [value]="'0000000000'"
+  >
+
+```
+
+### Pipe
+
+Pipe allows you to format any string with the mask you provide
+
+It is used like this: mask:'(format of mask)'
+
+```
+{{ value | mask:'{+7} ([000]) [000] [00] [00]' }}
 
 ```
 

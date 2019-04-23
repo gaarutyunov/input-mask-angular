@@ -1,16 +1,26 @@
-import {AfterViewInit, Directive, ElementRef, EventEmitter, Input, Output} from '@angular/core';
+import {Directive, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2} from '@angular/core';
 import {MaskedTextChangedListener} from 'ts-input-mask';
+import {InputMaskOptions} from './input-mask-options';
 
 @Directive({
   selector: 'input[mask]'
 })
-export class InputMaskAngularDirective implements AfterViewInit {
+export class InputMaskAngularDirective implements OnInit {
+  @Output() public maskFilled: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() public extractedValue: EventEmitter<string> = new EventEmitter<string>();
+  @Output() public formattedText: EventEmitter<string> = new EventEmitter<string>();
+  @Output() public placeholder: EventEmitter<string> = new EventEmitter<string>();
 
-  @Output('maskFilled') public maskFilled: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output('extractedValue') public extractedValue: EventEmitter<string> = new EventEmitter<string>();
-  @Output('formattedText') public formattedText: EventEmitter<string> = new EventEmitter<string>();
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2
+  ) {
+  }
 
-  constructor(private elementRef: ElementRef) {
+  private _value: string;
+
+  @Input('value') set value(value: string) {
+    this._value = value;
   }
 
   private _primaryFormat: string;
@@ -19,35 +29,50 @@ export class InputMaskAngularDirective implements AfterViewInit {
     this._primaryFormat = value;
   }
 
-  public ngAfterViewInit(): void {
+  private _options: InputMaskOptions = new InputMaskOptions();
+
+  @Input('options') set options(value: InputMaskOptions) {
+    this._options = value;
+  }
+
+  public ngOnInit(): void {
     this.setupListener(this.elementRef.nativeElement);
   }
 
   private setupListener(input: HTMLInputElement): void {
-    const emitChanges = (
-      maskFilled: boolean,
-      extractedValue: string,
-      formattedText: string
-    ): void => {
-      this.maskFilled.emit(maskFilled);
-      this.extractedValue.emit(extractedValue);
-      this.formattedText.emit(formattedText);
-    };
-    const listener: MaskedTextChangedListener = new MaskedTextChangedListener(
-      this._primaryFormat,
-      input,
-      new class implements MaskedTextChangedListener.ValueListener {
-        public onTextChanged(
-          maskFilled: boolean,
-          extractedValue: string,
-          formattedText: string
-        ): void {
-          emitChanges(maskFilled, extractedValue, formattedText);
-        }
-      }()
-    );
-
-    input.placeholder = String(listener.placeholder());
+    if (!!this._primaryFormat) {
+      const emitChanges = (
+        maskFilled: boolean,
+        extractedValue: string,
+        formattedText: string
+      ): void => {
+        this.maskFilled.emit(maskFilled);
+        this.extractedValue.emit(extractedValue);
+        this.formattedText.emit(formattedText);
+      };
+      const listener: MaskedTextChangedListener = MaskedTextChangedListener.installOn(
+        this._primaryFormat,
+        input,
+        new class implements MaskedTextChangedListener.ValueListener {
+          public onTextChanged(
+            maskFilled: boolean,
+            extractedValue: string,
+            formattedText: string
+          ): void {
+            emitChanges(maskFilled, extractedValue, formattedText);
+          }
+        }(),
+        this._options.affineFormats,
+        this._options.customNotations,
+        this._options.affinityCalculationStrategy,
+        this._options.autocomplete
+      );
+      this.renderer.setProperty(input, 'placeholder', String(listener.placeholder()));
+      if (!!this._value) {
+        listener.setText(this._value);
+      }
+      this.placeholder.emit(String(listener.placeholder()));
+    }
   }
 
 }
