@@ -11,17 +11,20 @@ export class InputMaskAngularPipe implements PipeTransform {
     primaryFormat: string,
     customNotations: Array<Notation> = []
   ): string {
-    const mask = Mask.getOrCreate(primaryFormat, customNotations);
-    const stringLength: number = value.length;
-    const result: Mask.Result = mask.apply(
-      new CaretString(
-        value,
-        stringLength
-      ),
-      false
-    );
+    if (!!primaryFormat) {
+      const mask = Mask.getOrCreate(primaryFormat, customNotations);
+      const stringLength: number = value.length;
+      const result: Mask.Result = mask.apply(
+        new CaretString(
+          value,
+          stringLength
+        ),
+        false
+      );
 
-    return String(result.formattedText.string);
+      return String(result.formattedText.string);
+    }
+    return value;
   }
 
 }
