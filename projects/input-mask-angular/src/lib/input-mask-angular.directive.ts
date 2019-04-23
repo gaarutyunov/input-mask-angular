@@ -73,7 +73,9 @@ export class InputMaskAngularDirective implements OnInit {
       }
       this.placeholder.emit(String(listener.placeholder()));
     } else {
-      this.extractedValue.emit(input.value);
+      input.addEventListener('input', () => {
+        this.extractedValue.emit(input.value);
+      });
     }
   }
 
