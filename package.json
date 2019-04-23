@@ -27,8 +27,8 @@
     "rxjs": "~6.3.3",
     "tslib": "^1.9.0",
     "zone.js": "~0.8.26",
-    "ts-input-mask": "^1.0.3",
-    "input-mask-angular": "^1.0.3"
+    "ts-input-mask": "^1.1.0",
+    "input-mask-angular": "^1.1.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.13.0",

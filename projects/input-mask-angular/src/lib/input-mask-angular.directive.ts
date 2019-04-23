@@ -1,16 +1,26 @@
-import {AfterViewInit, Directive, ElementRef, EventEmitter, Input, Output} from '@angular/core';
+import {Directive, ElementRef, EventEmitter, Input, OnInit, Output, Renderer2} from '@angular/core';
 import {MaskedTextChangedListener} from 'ts-input-mask';
 import {InputMaskOptions} from './input-mask-options';
 
 @Directive({
   selector: 'input[mask]'
 })
-export class InputMaskAngularDirective implements AfterViewInit {
+export class InputMaskAngularDirective implements OnInit {
   @Output() public maskFilled: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() public extractedValue: EventEmitter<string> = new EventEmitter<string>();
   @Output() public formattedText: EventEmitter<string> = new EventEmitter<string>();
+  @Output() public placeholder: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private elementRef: ElementRef) {
+  constructor(
+    private elementRef: ElementRef,
+    private renderer: Renderer2
+  ) {
+  }
+
+  private _value: string;
+
+  @Input('value') set value(value: string) {
+    this._value = value;
   }
 
   private _primaryFormat: string;
@@ -25,7 +35,7 @@ export class InputMaskAngularDirective implements AfterViewInit {
     this._options = value;
   }
 
-  public ngAfterViewInit(): void {
+  public ngOnInit(): void {
     this.setupListener(this.elementRef.nativeElement);
   }
 
@@ -57,8 +67,11 @@ export class InputMaskAngularDirective implements AfterViewInit {
         this._options.affinityCalculationStrategy,
         this._options.autocomplete
       );
-
-      input.placeholder = String(listener.placeholder());
+      this.renderer.setProperty(input, 'placeholder', String(listener.placeholder()));
+      if (!!this._value) {
+        listener.setText(this._value);
+      }
+      this.placeholder.emit(String(listener.placeholder()));
     }
   }
 

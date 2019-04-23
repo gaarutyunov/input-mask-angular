@@ -1,7 +1,9 @@
 <input type="text"
-       [mask]="'{+7} ([000]) [000] [00] [00]'"
+       [mask]="mask"
        (formattedText)="logValue($event)"
        (extractedValue)="logValue($event)"
        (maskFilled)="logValue($event)"
-       [options]="options">
+       [options]="options"
+       [value]="'98349576'">
 
+{{ '98349576' | mask:mask }}
