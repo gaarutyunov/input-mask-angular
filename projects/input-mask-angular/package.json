@@ -1,6 +1,6 @@
 {
   "name": "input-mask-angular",
-  "version": "1.1.5",
+  "version": "1.2.0",
   "description": "Angular directive using ts-input-mask library",
   "author": {
     "name": "German Arutyunov",
@@ -25,8 +25,8 @@
   ],
   "license": "MIT",
   "peerDependencies": {
-    "@angular/common": "^7.2.0",
-    "@angular/core": "^7.2.0",
-    "ts-input-mask": "^1.0.2"
+    "@angular/common": "^9.0.5",
+    "@angular/core": "^9.0.5",
+    "ts-input-mask": "^2.0.0"
   }
 }
